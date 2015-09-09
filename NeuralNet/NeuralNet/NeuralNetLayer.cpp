@@ -155,3 +155,34 @@ void NeuralNetLayer::CalcError()
 		}
 	}
 }
+
+void NeuralNetLayer::AdjustWeights()
+{
+	double dw; //delta weight
+
+	if (childLayer != NULL) //isn't output layer
+	{
+		for (int i = 0; i < numNodes; i++)
+		{
+			for (j = 0; j < numChildNodes; j++)
+			{
+				dw = learningRate * childLayer->errors[j] * neuronValues[i];
+
+				//momentum here
+
+				//else
+				weights[i][j] += dw;
+			}
+		}
+
+		for (int i = 0; i < numChildNodes; i++)
+		{
+			biasWeights[j] += learningRate * childLayer->errors[j] * biasValues[j];
+
+		}
+	}
+
+	
+
+
+}
