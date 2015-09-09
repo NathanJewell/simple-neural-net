@@ -1,2 +1,2 @@
 # simple-neural-net
-First neural net in python.
+First neural net in c++.
