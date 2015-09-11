@@ -19,6 +19,7 @@ public:
 	double learningRate;
 
 	bool boolOut;
+	bool linearOut;
 
 	NeuralNetLayer* parentLayer;
 	NeuralNetLayer* childLayer;

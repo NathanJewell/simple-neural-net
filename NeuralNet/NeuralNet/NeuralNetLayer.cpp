@@ -46,14 +46,15 @@ void NeuralNetLayer::Init(int NumNodes, NeuralNetLayer* parent, NeuralNetLayer* 
 		}
 	}
 	else {
+		//this stuff only matters if something is feeding into the layer (ie. not input layer)
 		weights = NULL;
 		biasValues = NULL;
 		biasWeights = NULL;
 		deltaWeights = NULL;
 
 	}
-
-	if (childLayer != NULL)
+	
+	if (childLayer != NULL) //all biases start at the same value
 	{
 		for (int i; i < numChildNodes; i++)
 		{
@@ -105,20 +106,22 @@ void NeuralNetLayer::CalcNeuronValues()
 {
 	if (parentLayer != NULL)
 	{
+		//do this for all nodes in layer
 		for (i = 0; i < numNodes; i++)
 		{
 			x = 0;
+			//add the values for all child nodes (j) times their respective weights together to recieve the total
 			for (j = 0; j < numParentNodes; j++)
 			{
-				x += parentLayer->neuronValues[j] * parentLayer->weights[i][j];
+				x += parentLayer->neuronValues[j] * parentLayer->weights[i][j]; 
 			}
 
-			x += parentLayer->biasValues[i] * parentLayer->biasWeights[i];
+			x += parentLayer->biasValues[i] * parentLayer->biasWeights[i]; //add weighted bias to total
 
 			if ((childLayer == NULL && linOut))
-				neuronValues[i] = x;
-			else
-				neuronValues[j] = 1.0f / (1 + exp(-x));
+				neuronValues[i] = x; //if the activation is linu
+			else // HARDCODED FUNCTION HERE BEWARNED !! <<---- should change that
+				neuronValues[j] = 1.0f / (1 + exp(-x));	//use the activation function to produce a final value
 
 		}
 	}
@@ -128,30 +131,31 @@ void NeuralNetLayer::CalcError()
 {
 	double sum;
 
-	if (childLayer == NULL)
+	if (childLayer == NULL) //output layer errors
 	{
-		for (i = 0; i < numNodes; i++)
+		for (i = 0; i < numNodes; i++) //calculate an error for each node (expected-desired) 
 		{
 			errors[i] = (desiredValues[i] - neuronValues[i]) * neuronValues[i] * (1.0f - neuronValues[i]);
 		}
 	}
-	else if (parentLayer == NULL)
+	else if (parentLayer == NULL) //no errors for input layer
 	{
 		for (int i = 0; i < numNodes; i++)
 		{
 			errors[i] = 0;
 		}
 	}
-	else
+	else //calculate errors for all hidden layers
 	{
+		//cycling through all possible combinations of one node and one child node to produce errors for each connection
 		for (int i = 0; i < numNodes; i++)
 		{
 			sum = 0;
 			for (j = 0; j < numChildNodes; j++)
 			{
-				sum += childLayer->errors * weights[i][j];
+				sum += childLayer->errors[j] * weights[i][j];
 			}
-			errors[i] = sum * neuronValues[i] * (1.0f - neuronValues[i]);
+			errors[i] = sum * neuronValues[i] * (1.0f - neuronValues[i]); //i need to look up/find out why this needs to happen
 		}
 	}
 }
@@ -162,9 +166,11 @@ void NeuralNetLayer::AdjustWeights()
 
 	if (childLayer != NULL) //isn't output layer
 	{
+		//for each neuron i, cycle through all of the child neurons j
+		//find a delta weight dw and then apply that change to the weight corresponding to [i][j] 
 		for (int i = 0; i < numNodes; i++)
 		{
-			for (j = 0; j < numChildNodes; j++)
+			for (j = 0; j < numChildNodes; j++) 
 			{
 				dw = learningRate * childLayer->errors[j] * neuronValues[i];
 
@@ -175,6 +181,7 @@ void NeuralNetLayer::AdjustWeights()
 			}
 		}
 
+		//similarly apply a change to the weighting of each bias based on the error
 		for (int i = 0; i < numChildNodes; i++)
 		{
 			biasWeights[j] += learningRate * childLayer->errors[j] * biasValues[j];

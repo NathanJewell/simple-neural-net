@@ -2,18 +2,21 @@
 
 void NeuralNet::Init(int numInNodes, int numHiddenNodes, int numOutNodes)
 {
-	IN.numNodes = numInNodees;
+	//initialize input layer
+	IN.numNodes = numInNodes;
 	IN.numChildNodes = numHiddenNodes;
 	IN.numParentNodes = 0;
 	IN.Init(numInNodes, NULL &HIDDEN);
 	IN.RandomizeWeights();
 
+	//initialize hidden layer
 	HIDDEN.numNodes = numHiddenNodes;
 	HIDDEN.numChildNodes = numOutNodes;
 	HIDDEN.numParentNodes = numInNodes;
 	HIDDEN.Init(numHiddenNodes, &IN, &OUT);
 	HIDDEN.RandomizeWeights();
 
+	//initialize output layer
 	OUT.numNodes = numOutNodes;
 	OUT.numChildNodes = 0;
 	OUT.numParentNodes = numHiddenNodes;
@@ -47,14 +50,14 @@ void NeuralNet::SetDesiredOut(int i, double val)
 	}
 }
 
-void NeuralNet::FeedForward()
+void NeuralNet::FeedForward() //calculate neuron values for each layer
 {
 	IN.CalcNeuronValues();
 	HIDDEN.CalcNeuronValues();
 	OUT.CalcNeuronValues();
 }
 
-void NeuralNet::BackPropogate()
+void NeuralNet::BackPropogate()	//calculate errors and adjust weights for each layer
 {
 	OUT.CalcError();
 	HIDDEN.CalcError();
@@ -63,7 +66,7 @@ void NeuralNet::BackPropogate()
 	OUT.AdjustWeights();
 }
 
-int NeuralNet::GetMaxOutID()
+int NeuralNet::GetMaxOutID() //get array index of output layer neuron with highest value
 {
 	int i, id;
 	double maxval;
@@ -83,12 +86,36 @@ int NeuralNet::GetMaxOutID()
 	return id;
 }
 
-double NeuralNet::CalcError()
+double NeuralNet::CalcError() //calculate total error
 {
 	double error = 0;
 
 	for (int i = 0; i < OUT.numNodes; i++)
 	{
-		error += pow(OUT.neuronValues)
+		error += pow(OUT.neuronValues[i] - OUT.desiredValues[i], 2);
 	}
+
+	error /= OUT.numNodes;
+
+	return error;
 }
+
+void NeuralNet::SetLearningRate(double rate)
+{
+	IN.learningRate = rate;
+	HIDDEN.learningRate = rate;
+	OUT.learningRate = rate;
+}
+
+void NeuralNet::SetLinOut(bool lin)
+{
+	IN.linearOut = lin;
+	HIDDEN.linearOut = lin;
+	OUT.linearOut = lin;
+}
+
+void NeuralNet::DumpData(string file)
+{
+	//ignore this for now
+}
+
