@@ -14,12 +14,12 @@ public:
 	void SetIn(int i, double val);
 	double GetOut(int i);
 	void SetDesiredOut(int i, double val);
-	void FeedForward();
-	void BackPropogate();
-	void GetMaxOutID();
-	void CalcError();
+	void FeedForward(); //calculate neuron values for each layer
+	void BackPropogate(); //calculate errors and adjust weights for each layer
+	void GetMaxOutID(); //get array index of output layer neuron with highest value
+	void CalcError(); //calculate total error
 	void SetLearningRate(double rate);
 	void SetLinOut(bool lin);
 	//setmomentum()
-	DumpData(string filename)
+	void DumpData(string filename)
 };
