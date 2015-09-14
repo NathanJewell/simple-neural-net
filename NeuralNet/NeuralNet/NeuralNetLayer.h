@@ -1,5 +1,7 @@
 // NeuralNet.cpp : Defines the entry point for the console application.
 //
+#ifndef NEURALNETLAYER_H
+#define NEURALNETLAYER_H
 #include <vector>
 #include <time.h>
 
@@ -26,7 +28,7 @@ public:
 
 	NeuralNetLayer();
 
-	void Init();
+	void Init(int nodes, NeuralNetLayer* parent, NeuralNetLayer* child);
 	void RandomizeWeights();
 	void CalcError();
 	void AdjustWeights();
@@ -34,5 +36,6 @@ public:
 
 };
 
+#endif
 
 

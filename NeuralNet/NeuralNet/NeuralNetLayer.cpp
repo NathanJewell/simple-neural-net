@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "NeuralNetLayer.h"
 
 NeuralNetLayer::NeuralNetLayer()
@@ -20,7 +21,7 @@ void NeuralNetLayer::Init(int NumNodes, NeuralNetLayer* parent, NeuralNetLayer* 
 	parentLayer = parent;
 	childLayer = child;
 
-	if (child != NULL)
+	if (childLayer != NULL)
 	{
 		for (int i = 0; i < numNodes; i++)
 		{
@@ -33,30 +34,21 @@ void NeuralNetLayer::Init(int NumNodes, NeuralNetLayer* parent, NeuralNetLayer* 
 			deltaWeights.push_back(tmp);
 		}
 
-		for (int i; i < numChildNodes)
+		for (int i = 0; i < numChildNodes; i++)
 		{
 			biasValues.push_back(0);
 			biasWeights.push_back(0);
 		}
 
-		for (int i = 0; i < NumNodes; i++)
-		{
-			weights.push_back(0);
-			deltaWeights.push_back(0);
-		}
 	}
 	else {
 		//this stuff only matters if something is feeding into the layer (ie. not input layer)
-		weights = NULL;
-		biasValues = NULL;
-		biasWeights = NULL;
-		deltaWeights = NULL;
-
+		//notice that weights, biasValues, biasWeights, and deltaWeights are not initialized in this case
 	}
 	
 	if (childLayer != NULL) //all biases start at the same value
 	{
-		for (int i; i < numChildNodes; i++)
+		for (int i = 0; i < numChildNodes; i++)
 		{
 			biasValues[i] = -1;
 			biasWeights[i] = 0;
@@ -69,8 +61,6 @@ void NeuralNetLayer::RandomizeWeights()
 	int min = 0;
 	int max = 200;
 	int number;
-
-	srand(time(NULL));
 
 	for (int i = 0; i < numNodes; i++)
 	{
@@ -87,7 +77,7 @@ void NeuralNetLayer::RandomizeWeights()
 		}
 	}
 	
-	for (i = 0; i < numChildNodes; i++)
+	for (int i = 0; i < numChildNodes; i++)
 	{
 		number = (((abs(rand()) % max - min + 1)) + min);
 
@@ -107,21 +97,28 @@ void NeuralNetLayer::CalcNeuronValues()
 	if (parentLayer != NULL)
 	{
 		//do this for all nodes in layer
-		for (i = 0; i < numNodes; i++)
+		for (int i = 0; i < numNodes; i++)
 		{
-			x = 0;
+			int x = 0;
 			//add the values for all child nodes (j) times their respective weights together to recieve the total
-			for (j = 0; j < numParentNodes; j++)
+			for (int j = 0; j < numParentNodes; j++)
 			{
-				x += parentLayer->neuronValues[j] * parentLayer->weights[i][j]; 
+				x += parentLayer->neuronValues[j] * parentLayer->weights[j][i]; 
 			}
 
 			x += parentLayer->biasValues[i] * parentLayer->biasWeights[i]; //add weighted bias to total
 
-			if ((childLayer == NULL && linOut))
-				neuronValues[i] = x; //if the activation is linu
+			if ((childLayer == NULL && linearOut))
+				neuronValues[i] = x; //if the activation is lin
+			else if (childLayer == NULL && boolOut)
+			{
+				if (x <= 0)
+					neuronValues[i] = false;
+				else
+				neuronValues[i] = true;
+			}
 			else // HARDCODED FUNCTION HERE BEWARNED !! <<---- should change that
-				neuronValues[j] = 1.0f / (1 + exp(-x));	//use the activation function to produce a final value
+				neuronValues[i] = 1.0f / (1 + exp(-x));	//use the activation function to produce a final value
 
 		}
 	}
@@ -133,8 +130,9 @@ void NeuralNetLayer::CalcError()
 
 	if (childLayer == NULL) //output layer errors
 	{
-		for (i = 0; i < numNodes; i++) //calculate an error for each node (expected-desired) 
+		for (int i = 0; i < numNodes; i++) //calculate an error for each node (expected-desired) 
 		{
+			sum = 0;
 			errors[i] = (desiredValues[i] - neuronValues[i]) * neuronValues[i] * (1.0f - neuronValues[i]);
 		}
 	}
@@ -151,7 +149,7 @@ void NeuralNetLayer::CalcError()
 		for (int i = 0; i < numNodes; i++)
 		{
 			sum = 0;
-			for (j = 0; j < numChildNodes; j++)
+			for (int j = 0; j < numChildNodes; j++)
 			{
 				sum += childLayer->errors[j] * weights[i][j];
 			}
@@ -170,7 +168,7 @@ void NeuralNetLayer::AdjustWeights()
 		//find a delta weight dw and then apply that change to the weight corresponding to [i][j] 
 		for (int i = 0; i < numNodes; i++)
 		{
-			for (j = 0; j < numChildNodes; j++) 
+			for (int j = 0; j < numChildNodes; j++) 
 			{
 				dw = learningRate * childLayer->errors[j] * neuronValues[i];
 
@@ -184,7 +182,7 @@ void NeuralNetLayer::AdjustWeights()
 		//similarly apply a change to the weighting of each bias based on the error
 		for (int i = 0; i < numChildNodes; i++)
 		{
-			biasWeights[j] += learningRate * childLayer->errors[j] * biasValues[j];
+			biasWeights[i] += learningRate * childLayer->errors[i] * biasValues[i];
 
 		}
 	}

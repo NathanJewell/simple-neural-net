@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "NeuralNet.h"
 
 void NeuralNet::Init(int numInNodes, int numHiddenNodes, int numOutNodes)
@@ -6,7 +7,7 @@ void NeuralNet::Init(int numInNodes, int numHiddenNodes, int numOutNodes)
 	IN.numNodes = numInNodes;
 	IN.numChildNodes = numHiddenNodes;
 	IN.numParentNodes = 0;
-	IN.Init(numInNodes, NULL &HIDDEN);
+	IN.Init(numInNodes, NULL, &HIDDEN);
 	IN.RandomizeWeights();
 
 	//initialize hidden layer
@@ -68,11 +69,10 @@ void NeuralNet::BackPropogate()	//calculate errors and adjust weights for each l
 
 int NeuralNet::GetMaxOutID() //get array index of output layer neuron with highest value
 {
-	int i, id;
 	double maxval;
 
 	maxval = OUT.neuronValues[0];
-	id = 0;
+	int id = 0;
 	
 	for (int i = 1; i < OUT.numNodes; i++)
 	{
@@ -112,10 +112,16 @@ void NeuralNet::SetLinOut(bool lin)
 	IN.linearOut = lin;
 	HIDDEN.linearOut = lin;
 	OUT.linearOut = lin;
+	OUT.boolOut = !lin;
 }
 
-void NeuralNet::DumpData(string file)
+void NeuralNet::SetBoolOut(bool out)
 {
-	//ignore this for now
+	OUT.linearOut = !out;
+	OUT.boolOut = out;
 }
+//void NeuralNet::DumpData(string file)
+//{
+	//ignore this for now
+//}
 
