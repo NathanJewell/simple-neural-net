@@ -17,7 +17,7 @@ void NeuralNetLayer::Init(int NumNodes, NeuralNetLayer* parent, NeuralNetLayer* 
 		errors.push_back(0);
 	}
 
-	//initializing everything with 0's
+	//initializing everything with 0
 	parentLayer = parent;
 	childLayer = child;
 
@@ -26,11 +26,13 @@ void NeuralNetLayer::Init(int NumNodes, NeuralNetLayer* parent, NeuralNetLayer* 
 		for (int i = 0; i < numNodes; i++)
 		{
 			std::vector<double> tmp;
+			std::vector<double> tmp2;
 			for (int j = 0; j < numChildNodes; j++)
 			{
 				tmp.push_back(0);
+				tmp2.push_back(1);
 			}
-			weights.push_back(tmp);
+			weights.push_back(tmp2);
 			deltaWeights.push_back(tmp);
 		}
 
@@ -118,7 +120,7 @@ void NeuralNetLayer::CalcNeuronValues()
 				neuronValues[i] = true;
 			}
 			else // HARDCODED FUNCTION HERE BEWARNED !! <<---- should change that
-				neuronValues[i] = 1.0f / (1 + exp(-x));	//use the activation function to produce a final value
+				neuronValues[i] = 1.0f / (1.0f + exp(-x));	//use the activation function to produce a final value
 
 		}
 	}

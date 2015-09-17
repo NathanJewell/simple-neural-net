@@ -22,11 +22,17 @@ struct point
 point genRandomInput()
 {
 	
-	double x = rand() % 21 -10; //random number between -10 and 10?
-	double y = rand() % 21 - 10;
+//	double x = (double)rand() % 21 -10; //random number between -10 and 10?
+//	double y = (double)rand() % 21 - 10;
 
+//	point coord(x, y);
+
+//	return coord;
+
+
+	double x = (double)rand() / (RAND_MAX + 1)*(10 + 10) - 10;
+	double y = (double)rand() / (RAND_MAX + 1)*(10 + 10) - 10;
 	point coord(x, y);
-
 	return coord;
 }
 
@@ -67,9 +73,10 @@ int main()
 	srand(time(NULL));
 	NeuralNet NN;
 	NN.Init(2, 1, 1);
-	NN.SetBoolOut(true);
-
-	int trainingEpochs = 10; //number of epochs to run during training
+	//NN.SetBoolOut(true);
+	//NN.SetLinOut(true);
+	NN.SetLearningRate(10);
+	int trainingEpochs = 1000; //number of epochs to run during training
 	int testingEpochs = 5;
 
 	std::string in;
@@ -87,7 +94,7 @@ int main()
 		NN.FeedForward(); //calculate neuron values
 		NN.CalcError(); //calculate errors
 		NN.BackPropogate(); //use errors to adjust weights
-		double res = NN.GetOut(NN.GetMaxOutID());
+		double res = NN.OUT.neuronValues[0];
 		std::cout << "    expected = " << calcDesiredOutput(coord) << std::endl;
 		std::cout << "    epoch " << i << ": " << res << std::endl;
 	}

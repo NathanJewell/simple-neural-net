@@ -109,10 +109,10 @@ void NeuralNet::SetLearningRate(double rate)
 
 void NeuralNet::SetLinOut(bool lin)
 {
-	IN.linearOut = lin;
-	HIDDEN.linearOut = lin;
-	OUT.linearOut = lin;
-	OUT.boolOut = !lin;
+	//IN.linearOut = lin;
+	//HIDDEN.linearOut = lin;
+	OUT.linearOut = true;
+	OUT.boolOut = false;
 }
 
 void NeuralNet::SetBoolOut(bool out)

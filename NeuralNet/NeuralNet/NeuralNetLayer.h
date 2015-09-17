@@ -22,7 +22,7 @@ public:
 
 	bool boolOut;
 	bool linearOut;
-
+	
 	NeuralNetLayer* parentLayer;
 	NeuralNetLayer* childLayer;
 
