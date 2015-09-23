@@ -101,7 +101,7 @@ void NeuralNetLayer::CalcNeuronValues()
 		//do this for all nodes in layer
 		for (int i = 0; i < numNodes; i++)
 		{
-			int x = 0;
+			double x = 0;
 			//add the values for all child nodes (j) times their respective weights together to recieve the total
 			for (int j = 0; j < numParentNodes; j++)
 			{

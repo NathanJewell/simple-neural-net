@@ -45,26 +45,13 @@ int calcDesiredOutput(point coord)
 	point p1(-11, -11); //p1 and p2 define ray fitting equation
 	point p2(11, 11);
 
-	//double res = ((coord.x - p1.x)*(p2.y - p1.y)) - ((coord.y - p1.y)*(p2.x - p1.x));
+	double res = ((coord.x - p1.x)*(p2.y - p1.y)) - ((coord.y - p1.y)*(p2.x - p1.x));
 
-	if (coord.y > coord.x)
+	if (res > 0)
 	{
-		if (coord.x > 0)
-			return 1;
-		else
-			return 0;
+		return 1;
 	}
-	else if (coord.y < coord.x)
-	{
-		if (coord.x > 0)
-			return 0;
-		else
-			return 1;
-	}
-	else
-	{
-		return 1; //return true if the point is on the line
-	}
+	return 0;
 
 }
 
@@ -76,26 +63,31 @@ int main()
 	//NN.SetBoolOut(true);
 	//NN.SetLinOut(true);
 	NN.SetLearningRate(10);
-	int trainingEpochs = 1000; //number of epochs to run during training
+	int trainingEpochs = 10000; //number of epochs to run during training
 	int testingEpochs = 5;
 
 	std::string in;
-
+	int lastout = 0;
 	for (int i = 0; i < trainingEpochs; i++)
 	{
 		
 		std::cout << "Starting generation " << i << ". Press any key to continue...";
 		//getline(std::cin, in);
 		point coord = genRandomInput();
+		while (calcDesiredOutput(coord) == lastout)
+		{
+			coord = genRandomInput();
+		}
+		lastout = calcDesiredOutput(coord);
 		std::cout << "   coord = (" << coord.x << ", " << coord.y << ")" << std::endl;
 		NN.SetIn(0, coord.x);
 		NN.SetIn(1, coord.y);
-		NN.SetDesiredOut(0, calcDesiredOutput(coord)); //set desired output to calculated output
+		NN.SetDesiredOut(0, lastout); //set desired output to calculated output
 		NN.FeedForward(); //calculate neuron values
 		NN.CalcError(); //calculate errors
 		NN.BackPropogate(); //use errors to adjust weights
 		double res = NN.OUT.neuronValues[0];
-		std::cout << "    expected = " << calcDesiredOutput(coord) << std::endl;
+		std::cout << "    expected = " << lastout << std::endl;
 		std::cout << "    epoch " << i << ": " << res << std::endl;
 	}
 	getline(std::cin, in);

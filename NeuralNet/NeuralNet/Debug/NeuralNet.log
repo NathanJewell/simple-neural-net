@@ -1,9 +1,9 @@
-﻿Build started 9/17/2015 10:47:10 AM.
+﻿Build started 9/23/2015 11:15:04 AM.
      1>Project "C:\Users\WilsonCS30\Documents\simple-neural-net\NeuralNet\NeuralNet\NeuralNet.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\NeuralNet.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\main.cpp(73): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\main.cpp(79): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\NeuralNet.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt NeuralNet.cpp NeuralNetLayer.cpp
          Skipping... (no relevant changes detected)
          NeuralNetLayer.cpp
@@ -17,4 +17,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.57
+Time Elapsed 00:00:00.61

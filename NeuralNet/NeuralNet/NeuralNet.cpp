@@ -64,7 +64,8 @@ void NeuralNet::BackPropogate()	//calculate errors and adjust weights for each l
 	HIDDEN.CalcError();
 
 	HIDDEN.AdjustWeights();
-	OUT.AdjustWeights();
+	IN.AdjustWeights();
+
 }
 
 int NeuralNet::GetMaxOutID() //get array index of output layer neuron with highest value
