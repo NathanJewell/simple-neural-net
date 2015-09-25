@@ -59,7 +59,7 @@ int main()
 {
 	srand(time(NULL));
 	NeuralNet NN;
-	NN.Init(2, 1, 1);
+	NN.Init(2, 1);
 	//NN.SetBoolOut(true);
 	//NN.SetLinOut(true);
 	NN.SetLearningRate(10);

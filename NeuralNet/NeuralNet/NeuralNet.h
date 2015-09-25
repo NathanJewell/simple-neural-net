@@ -9,11 +9,13 @@ class NeuralNet
 public:
 	//make this more flexible later plz
 	NeuralNetLayer IN;
-	NeuralNetLayer HIDDEN;
+	std::vector<NeuralNetLayer> HIDDEN;
 	NeuralNetLayer OUT;
 
-	void Init(int numInNodes, int numHiddenNodes, int numOutNodes);
+	void Init(int numInNodes, int numHiddenLayers, std::vector<int> layerNodes, int numOutNodes);
 
+	void forHidden(std::function<void()> f);
+	void addHiddenLayer(int numNodes);//add last layer first b/c ez
 	void SetIn(int i, double val);
 	double GetOut(int i);
 	void SetDesiredOut(int i, double val);
@@ -24,6 +26,8 @@ public:
 	void SetLearningRate(double rate);
 	void SetLinOut(bool lin);
 	void SetBoolOut(bool out);
+
+	
 	//setmomentum()
 	//void DumpData(string filename);
 };

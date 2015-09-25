@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "NeuralNet.h"
 
-void NeuralNet::Init(int numInNodes, int numHiddenNodes, int numOutNodes)
+void NeuralNet::Init(int numInNodes, int numHiddenLayers, std::vector<int> layerNodes, int numOutNodes)
 {
 	//initialize input layer
 	IN.numNodes = numInNodes;
@@ -11,11 +11,10 @@ void NeuralNet::Init(int numInNodes, int numHiddenNodes, int numOutNodes)
 	IN.RandomizeWeights();
 
 	//initialize hidden layer
-	HIDDEN.numNodes = numHiddenNodes;
-	HIDDEN.numChildNodes = numOutNodes;
-	HIDDEN.numParentNodes = numInNodes;
-	HIDDEN.Init(numHiddenNodes, &IN, &OUT);
-	HIDDEN.RandomizeWeights();
+	for (int ii = layerNodes.size(); ii > 0; ii++)
+	{
+		addHiddenLayer(layerNodes[ii]);
+	}
 
 	//initialize output layer
 	OUT.numNodes = numOutNodes;
@@ -23,6 +22,15 @@ void NeuralNet::Init(int numInNodes, int numHiddenNodes, int numOutNodes)
 	OUT.numParentNodes = numHiddenNodes;
 	OUT.Init(numOutNodes, &HIDDEN, NULL);
 
+}
+
+void NeuralNet::addHiddenLayer(int numNodes)
+{
+	HIDDEN.numNodes = numHiddenNodes;
+	HIDDEN.numChildNodes = numOutNodes;
+	HIDDEN.numParentNodes = numInNodes;
+	HIDDEN.Init(numHiddenNodes, &IN, &OUT);
+	HIDDEN.RandomizeWeights();
 }
 
 void NeuralNet::SetIn(int i, double val)
@@ -54,16 +62,16 @@ void NeuralNet::SetDesiredOut(int i, double val)
 void NeuralNet::FeedForward() //calculate neuron values for each layer
 {
 	IN.CalcNeuronValues();
-	HIDDEN.CalcNeuronValues();
+	forHidden(NeuralNetLayer.CaclNeuronValues(), true);
 	OUT.CalcNeuronValues();
 }
 
 void NeuralNet::BackPropogate()	//calculate errors and adjust weights for each layer
 {
 	OUT.CalcError();
-	HIDDEN.CalcError();
+	forHidden(NeuralNetLayer::calcError(), false);
 
-	HIDDEN.AdjustWeights();
+	forHidden(NeuralNetLayer::adjustWeights(), true);
 	IN.AdjustWeights();
 
 }
@@ -103,8 +111,11 @@ double NeuralNet::CalcError() //calculate total error
 
 void NeuralNet::SetLearningRate(double rate)
 {
-	IN.learningRate = rate;
-	HIDDEN.learningRate = rate;
+	IN.learningRate = rate;                           
+	for (int i = 0; i < HIDDEN.size; i++)
+	{
+		HIDDEN[i].learningRate = rate;
+	}
 	OUT.learningRate = rate;
 }
 
@@ -121,8 +132,28 @@ void NeuralNet::SetBoolOut(bool out)
 	OUT.linearOut = !out;
 	OUT.boolOut = out;
 }
+
+void NeuralNet::forHidden(std::function<void()> f, bool order)//true = 0-size false = size-0
+{
+	if (!order)
+	{
+		for (int i = HIDDEN.size; i < 0; i--)
+		{
+			HIDDEN[i].f();
+		}
+	}
+	else
+	{
+		for (int i = 0; i < HIDDEN.size; i++)
+		{
+			HIDDEN[i].f();
+		}
+	}
+
+}
 //void NeuralNet::DumpData(string file)
 //{
 	//ignore this for now
 //}
+
 
