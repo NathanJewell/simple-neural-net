@@ -59,7 +59,11 @@ int main()
 {
 	srand(time(NULL));
 	NeuralNet NN;
-	NN.Init(2, 1);
+	std::vector<int> values;
+	values.push_back(1); //output layer
+	values.push_back(1); //hidden layer
+	values.push_back(2); //input layer
+	NN.Init(values);
 	//NN.SetBoolOut(true);
 	//NN.SetLinOut(true);
 	NN.SetLearningRate(10);
@@ -86,7 +90,7 @@ int main()
 		NN.FeedForward(); //calculate neuron values
 		NN.CalcError(); //calculate errors
 		NN.BackPropogate(); //use errors to adjust weights
-		double res = NN.OUT.neuronValues[0];
+		double res = NN.OUT->neuronValues[0];
 		std::cout << "    expected = " << lastout << std::endl;
 		std::cout << "    epoch " << i << ": " << res << std::endl;
 	}

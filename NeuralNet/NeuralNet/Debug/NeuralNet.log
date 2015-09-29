@@ -1,14 +1,44 @@
-﻿Build started 9/25/2015 11:11:23 AM.
+﻿Build started 9/29/2015 11:18:12 AM.
      1>Project "C:\Users\WilsonCS30\Documents\simple-neural-net\NeuralNet\NeuralNet\NeuralNet.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\NeuralNet.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnet.h(17): error C2039: 'function' : is not a member of 'std'
-     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnet.h(17): error C2061: syntax error : identifier 'function'
      1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\main.cpp(60): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\main.cpp(62): error C2660: 'NeuralNet::Init' : function does not take 2 arguments
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\NeuralNet.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt NeuralNet.cpp NeuralNetLayer.cpp
+         NeuralNetLayer.cpp
+     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnetlayer.cpp(67): error C2597: illegal reference to non-static member 'NeuralNetLayer::numNodes'
+     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnetlayer.cpp(67): error C3867: 'NeuralNetLayer::numNodes': function call missing argument list; use '&NeuralNetLayer::numNodes' to create a pointer to member
+     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnetlayer.cpp(67): error C2568: '<' : unable to resolve function overload
+                 unable to recover from previous error(s); stopping compilation
+         NeuralNet.cpp
+     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnet.cpp(37): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnet.cpp(92): error C2664: 'void NeuralNet::forHidden(std::function<void (void)> *,bool)' : cannot convert argument 1 from 'void' to 'std::function<void (void)> *'
+                 Expressions of type void cannot be converted to other types
+     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnet.cpp(99): error C2664: 'void NeuralNet::forHidden(std::function<void (void)> *,bool)' : cannot convert argument 1 from 'void' to 'std::function<void (void)> *'
+                 Expressions of type void cannot be converted to other types
+     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnet.cpp(101): error C2664: 'void NeuralNet::forHidden(std::function<void (void)> *,bool)' : cannot convert argument 1 from 'void' to 'std::function<void (void)> *'
+                 Expressions of type void cannot be converted to other types
+     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnet.cpp(142): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\program files (x86)\microsoft visual studio 12.0\vc\include\xrefwrap(58): error C2064: term does not evaluate to a function taking 1 arguments
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\xrefwrap(118) : see reference to class template instantiation 'std::_Result_of<_Fty,NeuralNetLayer &>' being compiled
+                 with
+                 [
+                     _Fty=std::function<void (void)> *
+                 ]
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\functional(975) : see reference to class template instantiation 'std::result_of<_Funx (NeuralNetLayer &)>' being compiled
+                 with
+                 [
+                     _Funx=std::function<void (void)> *
+                 ]
+                 c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnet.cpp(170) : see reference to class template instantiation 'std::_Do_call_ret<false,_Ret,std::function<void (void)> *,std::tuple<NeuralNetLayer>,std::tuple<>,std::_Arg_idx<0>>' being compiled
+                 with
+                 [
+                     _Ret=void
+                 ]
+     1>c:\users\wilsoncs30\documents\simple-neural-net\neuralnet\neuralnet\neuralnet.cpp(175): warning C4018: '<' : signed/unsigned mismatch
+         Generating Code...
      1>Done Building Project "C:\Users\WilsonCS30\Documents\simple-neural-net\NeuralNet\NeuralNet\NeuralNet.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:00.61
+Time Elapsed 00:00:00.57

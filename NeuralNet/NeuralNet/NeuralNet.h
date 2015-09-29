@@ -3,18 +3,20 @@
 
 #include "NeuralNetLayer.h"
 #include <string.h>
+#include <functional>
 
 class NeuralNet
 {
 public:
 	//make this more flexible later plz
-	NeuralNetLayer IN;
-	std::vector<NeuralNetLayer> HIDDEN;
-	NeuralNetLayer OUT;
 
-	void Init(int numInNodes, int numHiddenLayers, std::vector<int> layerNodes, int numOutNodes);
+	std::vector<NeuralNetLayer> LAYERS;//first layer is input second is output
+	NeuralNetLayer * OUT;
+	NeuralNetLayer * IN;
 
-	void forHidden(std::function<void()> f);
+	void Init(std::vector<int> layerNodes);
+
+	void forHidden(std::function<void()>* f, bool y);
 	void addHiddenLayer(int numNodes);//add last layer first b/c ez
 	void SetIn(int i, double val);
 	double GetOut(int i);
