@@ -4,6 +4,8 @@
 //first and last value of layer nodes are in and out layer node #'s respectively
 void NeuralNet::Init(std::vector<int> layerNodes)
 {
+	desiredSet = false;
+	inputSet = false;
 	//initialize input layer
 	NeuralNetLayer in;
 	NeuralNetLayer out;
@@ -13,7 +15,7 @@ void NeuralNet::Init(std::vector<int> layerNodes)
 	LAYERS.push_back(out); //last layer first
 
 	//initialize hidden layers adding the last layer first
-	for (int ii = layerNodes.size(); ii > 1; ii--)
+	for (int ii = layerNodes.size()-2; ii > 0; ii--)
 	{
 		addHiddenLayer(layerNodes[ii]);
 	}
@@ -68,6 +70,11 @@ void NeuralNet::SetIn(int i, double val)
 	}
 }
 
+void NeuralNet::SetIn(std::vector<double> vals)
+{
+	IN->neuronValues = vals;
+}
+
 double NeuralNet::GetOut(int i)
 {
 	if ((i >= 0) && (i < OUT->numNodes))
@@ -86,19 +93,40 @@ void NeuralNet::SetDesiredOut(int i, double val)
 	}
 }
 
+void NeuralNet::SetDesiredOut(std::vector<double> vals)
+{
+	OUT->desiredValues = vals;
+}
+
 void NeuralNet::FeedForward() //calculate neuron values for each layer
 {
 	IN->CalcNeuronValues();
-	forHidden(NeuralNetLayer::CalcNeuronValues(), true);
+	
+	for (int i = 1; i < LAYERS.size()-1; i++)//cycle through all hidden layers
+	{
+		LAYERS[i].CalcNeuronValues();
+	}
+
 	OUT->CalcNeuronValues();
 }
 
 void NeuralNet::BackPropogate()	//calculate errors and adjust weights for each layer
 {
 	OUT->CalcError();
-	forHidden(NeuralNetLayer::CalcError(), false);
 
-	forHidden(NeuralNetLayer::AdjustWeights(), true);
+	for (int i = LAYERS.size()-2; i < 0; i--)//cycle through all hidden layers backwards
+	{
+		LAYERS[i].CalcError();
+	}
+	//no errors for the input layer
+
+
+	//no weights for the output layer
+		for (int i = 1; i < LAYERS.size()-1; i++)//cycle through all hidden layers 
+	{
+		LAYERS[i].AdjustWeights();
+	}
+
 	IN->AdjustWeights();
 
 }
@@ -159,26 +187,11 @@ void NeuralNet::SetBoolOut(bool out)
 	LAYERS[LAYERS.size() - 1].linearOut = !out;
 	LAYERS[LAYERS.size() - 1].boolOut = out;
 }
-
-void NeuralNet::forHidden(std::function<void()>* f, bool order)//true = 0-size false = size-0
+void NeuralNet::Process()
 {
-	if (!order)
-	{
-		for (int i = LAYERS.size(); i < 1; i--)
-		{
-			auto func = std::bind(f, LAYERS[i]);
-			func();
-		}
-	}
-	else
-	{
-		for (int i = 1; i < LAYERS.size(); i++)
-		{
-			auto func = std::bind(f, LAYERS[i]);
-			func();
-		}
-	}
-
+	FeedForward();
+	CalcError();
+	BackPropogate();
 }
 //void NeuralNet::DumpData(string file)
 //{

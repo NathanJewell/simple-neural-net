@@ -57,44 +57,62 @@ int calcDesiredOutput(point coord)
 
 int main()
 {
-	srand(time(NULL));
-	NeuralNet NN;
-	std::vector<int> values;
-	values.push_back(1); //output layer
-	values.push_back(1); //hidden layer
-	values.push_back(2); //input layer
-	NN.Init(values);
+	//srand(time(NULL));
+	//NeuralNet NN;
+	//std::vector<int> values;
+	//values.push_back(1); //output layer
+	//values.push_back(1); //hidden layer
+	//values.push_back(2); //input layer
+	//NN.Init(values);
 	//NN.SetBoolOut(true);
 	//NN.SetLinOut(true);
-	NN.SetLearningRate(10);
-	int trainingEpochs = 10000; //number of epochs to run during training
-	int testingEpochs = 5;
+	//NN.SetLearningRate(10);
+	//int trainingEpochs = 10000; //number of epochs to run during training
+	//int testingEpochs = 5;
 
-	std::string in;
-	int lastout = 0;
-	for (int i = 0; i < trainingEpochs; i++)
+	//std::string in;
+	//int lastout = 0;
+	//for (int i = 0; i < trainingEpochs; i++)
+	//{
+	//	
+	//	std::cout << "Starting generation " << i << ". Press any key to continue...";
+	//	//getline(std::cin, in);
+	//	point coord = genRandomInput();
+	//	while (calcDesiredOutput(coord) == lastout)
+	//	{
+	//		coord = genRandomInput();
+	//	}
+	//	lastout = calcDesiredOutput(coord);
+	//	std::cout << "   coord = (" << coord.x << ", " << coord.y << ")" << std::endl;
+	//	NN.SetIn(0, coord.x);
+	//	NN.SetIn(1, coord.y);
+	//	NN.SetDesiredOut(0, lastout); //set desired output to calculated output
+	//  NN.Process()	
+	//	double res = NN.OUT->neuronValues[0];
+	//	std::cout << "    expected = " << lastout << std::endl;
+	//	std::cout << "    epoch " << i << ": " << res << std::endl;
+	//}
+	//getline(std::cin, in);
+
+	/*TEMPLATE FOR NN
+
+	NeuralNet NN;
+	int trainingEpochs;
+	std::vector<int> values;
+	//push_back values ouput layer first
+	NN.Init(values)
+	//SetBoolOut(bool)
+	//SetLinOut(bool)
+	NN.SetLearningRate();
+
+	for(int ii = 0; ii < trainingEpochs; ii++)
 	{
+		std::vector<double> input = //gen input
+		sd
+		NN.SetIn
+
 		
-		std::cout << "Starting generation " << i << ". Press any key to continue...";
-		//getline(std::cin, in);
-		point coord = genRandomInput();
-		while (calcDesiredOutput(coord) == lastout)
-		{
-			coord = genRandomInput();
-		}
-		lastout = calcDesiredOutput(coord);
-		std::cout << "   coord = (" << coord.x << ", " << coord.y << ")" << std::endl;
-		NN.SetIn(0, coord.x);
-		NN.SetIn(1, coord.y);
-		NN.SetDesiredOut(0, lastout); //set desired output to calculated output
-		NN.FeedForward(); //calculate neuron values
-		NN.CalcError(); //calculate errors
-		NN.BackPropogate(); //use errors to adjust weights
-		double res = NN.OUT->neuronValues[0];
-		std::cout << "    expected = " << lastout << std::endl;
-		std::cout << "    epoch " << i << ": " << res << std::endl;
-	}
-	getline(std::cin, in);
+	*/
 	
 }
 
